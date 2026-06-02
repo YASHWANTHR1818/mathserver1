@@ -1,142 +1,131 @@
 # Ex.05 Design a Website for Server Side Processing
-# Date:01-10-2025
-# AIM:
-To design a website to calculate the power of a lamp filament in an incandescent bulb in the server side.
+## Date:
 
-# FORMULA:
-P = I2R
-P --> Power (in watts)
- I --> Intensity
- R --> Resistance
+## AIM:
+ To design a website to calculate the power of a lamp filament in an incandescent bulb in the server side. 
 
-# DESIGN STEPS:
-## Step 1:
+
+## FORMULA:
+P = I<sup>2</sup>R
+<br> P --> Power (in watts)
+<br> I --> Intensity
+<br> R --> Resistance
+
+## DESIGN STEPS:
+
+### Step 1:
 Clone the repository from GitHub.
 
-## Step 2:
+### Step 2:
 Create Django Admin project.
 
-## Step 3:
+### Step 3:
 Create a New App under the Django Admin project.
 
-## Step 4:
+### Step 4:
 Create python programs for views and urls to perform server side processing.
 
-## Step 5:
+### Step 5:
 Create a HTML file to implement form based input and output.
 
-## Step 6:
+### Step 6:
 Publish the website in the given URL.
 
-# PROGRAM :
+## PROGRAM :
 ```
-mohamed.html
-<!DOCTYPE html>
+power.html
+
 <html>
+
 <head>
-    <title>Lamp Power Calculator</title>
-    <style>
-        body {
-            background: linear-gradient(90deg,#5761B2, #1FC5A8); 
-            
-        }
-
-        h1 {
-            color: darkblue;
-            font-size: 28px;
-        }
-
-        .container {
-            background-color: #ffffff;  
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>POWER OF LAMP IN INCANDESCENT BULD</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style type="text/css">
+        .box {
+            display: block;
             width: 500px;
-            padding: 50px; 
+            min-height: 300px;
+            font-size: 20px;
+            background: rgb(21, 208, 215);
+            background: linear-gradient(90deg, rgb(99, 237, 118) 9%, rgb(193, 166, 202) 56%);
+            border-radius: 10px;
+            box-shadow: rgba(239, 5, 24, 0.35) 0px 5px 15px;
         }
-
-        label {
-            font-size: 26px;
-            color: #333333;
-        }
-
-        input {
-            width: 80%;
-            font-size: 24px;
-            border-radius: 8px;
-            border: 2px solid #080707;
-        }
-
-        button {
-            font-size: 24px;
-            background-color: darkblue;
-            color: white;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background-color: navy;
-        }
-
-        h2 {
-            color: darkgreen;
-            font-size: 24px;
-        }
-    </style>
+       </style>
 </head>
+
 <body>
-    <center>
-    <h1>Incandescent Bulb Power Calculator</h1>
-
-    <div class="container">
-        <form method="POST">
-            {% csrf_token %}
-            <label>Intensity (I):</label>
-            <input type="number" name="intensity" required>
-
-            <label>Resistance (R):</label>
-            <input type="number" name="resistance" required>
-
-            <button type="submit">Calculate Power</button>
-        </form>
-
-        {% if result %}
-            <h2>Power (P) = {{ result }} Watts</h2>
-        {% endif %}
+    <div>
+        <div class="box">
+            <h1>POWER OF LAMP IN INCANDESCENT BULB</h1>
+            <form method="POST">
+                {% csrf_token %}
+                <div>
+                    INTENSITY : <input type="text" name="Intensity" value="{{I}}"></input>(in A)<br />
+                </div>
+                <div >
+                    RESISITANCE : <input type="text" name="Resistence" value="{{R}}"></input>(in Ω)<br />
+                </div>
+                <div >
+                    <input type="submit" value="Calculate"></input><br />
+                </div>
+                <div>
+                    POWER : <input type="text" name="Power" value="{{Power}}"></input>W<br />
+                </div>
+            </form>
+        </div>
     </div>
-    </center>
 </body>
+
 </html>
 
 views.py
 
 from django.shortcuts import render
 
-def azar(request):
-    result = None
-    if request.method == "POST":
-        try:
-            I = float(request.POST.get("intensity"))
-            R = float(request.POST.get("resistance"))
-            result = (I ** 2) * R
-        except:
-            result = "Invalid input"
-    return render(request, "calc/mohamed.html", {"result": result})
+def powerlamp(request):
+    context={}
+    context['Power'] = ""
+    context['I'] = ""
+    context['R'] = ""
+    if request.method == 'POST':
+        print("POST method is used")
+        I = request.POST.get('Intensity','')
+        R = request.POST.get('Resistence','')
+        print('request=',request)
+        print('Intensity=',I)
+        print('Resistence=',R)
+        Power = int(I) * int(I) * int(R)
+        context['Power'] = Power
+        context['I'] = I
+        context['R'] = R
+        print('Power=',Power)
+    return render(request,'mathapp/power.html',context)
 
 urls.py
 
 from django.contrib import admin
 from django.urls import path
-from calc import views
-
+from mathapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.azar, name='azar'),
-]
+    path('',views.powerlamp,name="powerlamp"),]
 ```
-# SERVER SIDE PROCESSING:
-![alt text](terminalimg.png)
-# HOMEPAGE:
-![alt text](homepage.png)
-# RESULT:
-![alt text](output1.png)
-![alt text](output2.png)
 
+
+## SERVER SIDE PROCESSING:
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/5cf92cee-08f9-4271-ab89-f8a5bd3d3c08" />
+
+
+
+## HOMEPAGE:
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/fb7e0659-f044-4bab-996c-9b56f43bb402" />
+
+
+
+
+## RESULT:
 The program for performing server side processing is completed successfully.
